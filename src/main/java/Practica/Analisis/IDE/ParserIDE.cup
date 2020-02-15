@@ -1,0 +1,43 @@
+package Practica.Analisis.IDE;
+
+import java_cup.runtime.Symbol;
+
+parser code {:
+        
+        public ParserIDE(LexerIDE lex) { 
+            super(lex);   
+	}
+        
+        public void setAccion(String tipo,String mensaje,String accion){
+            System.out.println(tipo+"         "+mensaje);
+        }
+        
+        /*public void syntax_error(Symbol s){
+            setAccion("ERROR","Error Sintaxis token: " + s.right,"");
+        }*/
+
+        public void syntax_error(Symbol s){
+            System.out.println("La Cadena: " + s.value + " en la Linea: " + (s.left+1) + ", Columna: "+(s.right+1)+ " esta fuera de contexto.");
+        }
+        
+:}
+
+/* Terminals (tokens returned by the scanner). */
+terminal           PROYECTO, FINPROYECTO, CARPETA, FINCARPETA, ARCHIVO, MENOR, MAYOR, COMILLA, ASIGNACION,
+                   nombre, ubicacion;
+terminal String    CADENA, PATH, SLASH;
+/* Non-terminals */
+non terminal            s0, s1, s2;
+
+/* The grammar */
+start with s0;
+
+s0 ::=  MENOR PROYECTO nombre ASIGNACION CADENA MAYOR s1 MENOR FINPROYECTO MAYOR
+       |error MAYOR s1
+       ;
+s1 ::=  MENOR s2
+       ;
+s2 ::=  ARCHIVO nombre ASIGNACION CADENA ubicacion ASIGNACION COMILLA PATH COMILLA SLASH MAYOR s1
+       |CARPETA nombre ASIGNACION CADENA MAYOR s1 MENOR FINCARPETA MAYOR
+       |error MAYOR s1
+       ;
