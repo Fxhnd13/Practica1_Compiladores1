@@ -20,7 +20,7 @@ public class Token {
         this.line = line;
         this.lexem = lexem;
         this.type = type;
-        if(type.equals("CADENA")){
+        if(type.equals("CADENA")||type.equals("PATH")){
             this.lexem = lexem.replaceAll("\"", "");
         }
         this.column = column;

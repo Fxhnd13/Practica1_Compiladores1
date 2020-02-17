@@ -38,13 +38,13 @@ public class LexerIDE implements java_cup.runtime.Scanner {
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED = 
-    "\11\0\1\2\1\2\1\41\1\2\1\2\22\0\1\35\1\0\1\33"+
-    "\1\1\6\0\2\1\1\0\1\1\1\36\1\16\12\1\2\0\1\31"+
-    "\1\34\1\32\1\0\1\1\1\12\1\1\1\10\1\1\1\7\2\1"+
-    "\1\13\1\14\5\1\1\5\1\3\1\1\1\4\1\1\1\11\1\1"+
-    "\1\15\2\1\1\6\1\1\4\0\1\1\1\0\1\30\1\22\1\27"+
-    "\1\1\1\24\3\1\1\26\3\1\1\21\1\17\1\20\2\1\1\23"+
-    "\1\37\1\1\1\25\1\40\4\1\12\0\1\41\u1fa2\0\1\41\1\41"+
+    "\11\0\1\2\1\2\1\41\1\2\1\2\22\0\1\23\1\0\1\40"+
+    "\1\1\6\0\2\1\1\0\1\1\1\3\1\24\12\1\2\0\1\22"+
+    "\1\37\1\25\1\0\1\1\1\16\1\1\1\14\1\1\1\13\2\1"+
+    "\1\17\1\20\5\1\1\11\1\7\1\1\1\10\1\1\1\15\1\1"+
+    "\1\21\2\1\1\12\1\1\4\0\1\1\1\0\1\36\1\31\1\4"+
+    "\1\1\1\33\3\1\1\35\3\1\1\30\1\26\1\27\2\1\1\32"+
+    "\1\5\1\1\1\34\1\6\4\1\12\0\1\41\u1fa2\0\1\41\1\41"+
     "\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
 
   /** 
@@ -58,13 +58,13 @@ public class LexerIDE implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\3\1\1\3\2\1\1\4\1\5"+
-    "\1\6\1\7\23\0\1\10\24\0\1\11\2\0\1\12"+
-    "\2\0\1\13\1\14\3\0\1\15\1\0\1\16\1\0"+
-    "\1\17\1\20";
+    "\1\0\1\1\1\2\3\1\1\3\1\4\1\5\1\6"+
+    "\2\1\1\7\1\1\11\0\1\10\36\0\1\11\3\0"+
+    "\1\12\1\13\4\0\1\14\3\0\1\15\2\0\1\16"+
+    "\1\0\1\17\1\20";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[70];
+    int [] result = new int[75];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -89,18 +89,19 @@ public class LexerIDE implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\42\0\104\0\146\0\210\0\252\0\314\0\356"+
-    "\0\u0110\0\42\0\42\0\u0132\0\42\0\u0154\0\u0176\0\u0198"+
-    "\0\u01ba\0\u01dc\0\u01fe\0\u0220\0\u0242\0\u0264\0\u0286\0\u02a8"+
-    "\0\u02ca\0\u02ec\0\u030e\0\u0330\0\u0352\0\u0374\0\u0396\0\u03b8"+
-    "\0\42\0\u03da\0\u03fc\0\u041e\0\u0440\0\u0462\0\u0484\0\u04a6"+
-    "\0\u04c8\0\u04ea\0\u050c\0\u052e\0\u0550\0\u0572\0\u0594\0\u05b6"+
-    "\0\u05d8\0\u05fa\0\u061c\0\u063e\0\u0660\0\42\0\u0682\0\u06a4"+
-    "\0\42\0\u06c6\0\u06e8\0\42\0\42\0\u070a\0\u072c\0\u074e"+
-    "\0\42\0\u0770\0\u01ba\0\u0792\0\u01ba\0\42";
+    "\0\0\0\42\0\104\0\146\0\210\0\252\0\314\0\42"+
+    "\0\42\0\42\0\356\0\u0110\0\42\0\u0132\0\u0154\0\u0176"+
+    "\0\u0198\0\314\0\u01ba\0\u01dc\0\u01fe\0\u0220\0\u0242\0\42"+
+    "\0\u0264\0\u0286\0\u02a8\0\u02ca\0\u02ec\0\u030e\0\u0330\0\u0352"+
+    "\0\u0374\0\u0396\0\u03b8\0\u03da\0\u03fc\0\u041e\0\u0440\0\u0462"+
+    "\0\u0484\0\u04a6\0\u04c8\0\u04ea\0\u050c\0\u052e\0\u0550\0\u0572"+
+    "\0\u0594\0\u05b6\0\u05d8\0\u05fa\0\u061c\0\u063e\0\42\0\u0660"+
+    "\0\u0682\0\u06a4\0\42\0\42\0\u06c6\0\u06e8\0\u070a\0\u072c"+
+    "\0\42\0\u074e\0\u0770\0\u0792\0\42\0\u07b4\0\u07d6\0\42"+
+    "\0\u07f8\0\42\0\42";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[70];
+    int [] result = new int[75];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -123,49 +124,32 @@ public class LexerIDE implements java_cup.runtime.Scanner {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\2\2\1\3\1\4\4\2\1\5\1\2\1\6\3\2"+
-    "\1\7\1\10\5\2\1\11\3\2\1\12\1\13\1\14"+
-    "\1\15\4\2\45\0\1\3\43\0\1\16\47\0\1\17"+
-    "\33\0\1\20\36\0\1\21\1\0\1\22\4\21\1\23"+
-    "\5\21\1\0\12\21\6\0\2\21\21\0\1\24\43\0"+
-    "\1\25\20\0\1\26\1\0\13\26\1\0\12\26\6\0"+
-    "\2\26\6\0\1\27\40\0\1\30\45\0\1\31\32\0"+
-    "\1\21\1\0\13\21\1\32\12\21\4\0\1\33\1\34"+
-    "\2\21\2\0\1\21\1\0\1\21\1\35\11\21\1\32"+
-    "\12\21\4\0\1\33\1\34\2\21\2\0\1\21\1\0"+
-    "\7\21\1\36\3\21\1\32\12\21\4\0\1\33\1\34"+
-    "\2\21\22\0\1\37\46\0\1\40\14\0\1\26\1\0"+
-    "\13\26\1\0\12\26\2\0\1\41\1\0\1\42\1\0"+
-    "\2\26\7\0\1\43\36\0\1\44\51\0\1\45\27\0"+
-    "\1\21\1\0\13\21\1\0\12\21\6\0\2\21\2\0"+
-    "\1\21\1\0\13\21\1\0\12\21\4\0\1\33\1\0"+
-    "\2\21\30\0\1\46\13\0\1\21\1\0\2\21\1\47"+
-    "\10\21\1\32\12\21\4\0\1\33\1\34\2\21\2\0"+
-    "\1\21\1\0\1\21\1\50\11\21\1\32\12\21\4\0"+
-    "\1\33\1\34\2\21\23\0\1\51\46\0\1\52\13\0"+
-    "\1\26\1\0\13\26\1\0\12\26\4\0\1\42\1\0"+
-    "\2\26\10\0\1\53\41\0\1\54\46\0\1\55\64\0"+
-    "\1\56\3\0\1\21\1\0\3\21\1\57\7\21\1\32"+
-    "\12\21\4\0\1\33\1\34\2\21\2\0\1\21\1\0"+
-    "\1\60\12\21\1\32\12\21\4\0\1\33\1\34\2\21"+
-    "\24\0\1\61\46\0\1\62\21\0\1\63\42\0\1\64"+
-    "\45\0\1\65\64\0\1\66\2\0\1\21\1\0\4\21"+
-    "\1\67\6\21\1\32\12\21\4\0\1\33\1\34\2\21"+
-    "\2\0\1\21\1\0\4\21\1\70\6\21\1\32\12\21"+
-    "\4\0\1\33\1\34\2\21\25\0\1\71\44\0\1\72"+
-    "\23\0\1\73\42\0\1\74\34\0\1\75\35\0\1\21"+
-    "\1\0\5\21\1\76\5\21\1\32\12\21\4\0\1\33"+
-    "\1\34\2\21\2\0\1\21\1\0\6\21\1\77\4\21"+
-    "\1\32\12\21\4\0\1\33\1\34\2\21\27\0\1\100"+
-    "\20\0\1\101\35\0\1\21\1\0\6\21\1\102\4\21"+
-    "\1\32\12\21\4\0\1\33\1\34\2\21\2\0\1\21"+
-    "\1\0\7\21\1\103\3\21\1\32\12\21\4\0\1\33"+
-    "\1\34\2\21\21\0\1\104\22\0\1\21\1\0\2\21"+
-    "\1\105\10\21\1\32\12\21\4\0\1\33\1\34\2\21"+
-    "\20\0\1\106\22\0";
+    "\2\2\1\3\4\2\1\4\4\2\1\5\1\2\1\6"+
+    "\3\2\1\7\1\10\1\11\1\12\1\13\5\2\1\14"+
+    "\2\2\1\15\1\16\45\0\1\3\47\0\1\17\47\0"+
+    "\1\20\33\0\1\21\54\0\1\22\1\23\44\0\1\24"+
+    "\43\0\1\25\11\0\1\26\2\0\16\26\1\0\1\26"+
+    "\1\27\1\0\11\26\1\0\1\30\12\0\1\31\40\0"+
+    "\1\32\45\0\1\33\34\0\1\34\4\0\1\35\6\0"+
+    "\1\23\46\0\1\36\46\0\1\37\5\0\1\26\2\0"+
+    "\16\26\1\0\1\26\2\0\11\26\1\0\1\30\2\0"+
+    "\1\40\2\0\16\40\4\0\11\40\15\0\1\41\36\0"+
+    "\1\42\51\0\1\43\32\0\1\44\47\0\1\45\54\0"+
+    "\1\46\14\0\1\47\36\0\1\40\1\0\1\50\16\40"+
+    "\1\0\1\51\1\27\1\0\11\40\16\0\1\52\41\0"+
+    "\1\53\46\0\1\54\32\0\1\55\40\0\1\56\63\0"+
+    "\1\57\45\0\1\60\7\0\1\61\36\0\1\40\2\0"+
+    "\16\40\1\0\1\51\2\0\11\40\17\0\1\62\42\0"+
+    "\1\63\45\0\1\64\32\0\1\65\36\0\1\66\65\0"+
+    "\1\67\12\0\1\70\42\0\1\71\51\0\1\72\42\0"+
+    "\1\73\34\0\1\74\43\0\1\75\41\0\1\76\63\0"+
+    "\1\77\12\0\1\100\44\0\1\101\44\0\1\102\42\0"+
+    "\1\103\53\0\1\104\52\0\1\105\16\0\1\106\42\0"+
+    "\1\107\51\0\1\110\24\0\1\111\53\0\1\107\1\0"+
+    "\1\112\37\0\1\111\1\0\1\113\14\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[1972];
+    int [] result = new int[2074];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -203,12 +187,12 @@ public class LexerIDE implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\7\1\2\11\1\1\1\11\23\0\1\11"+
-    "\24\0\1\11\2\0\1\11\2\0\2\11\3\0\1\11"+
-    "\1\0\1\1\1\0\1\1\1\11";
+    "\1\0\1\11\5\1\3\11\2\1\1\11\1\1\11\0"+
+    "\1\11\36\0\1\11\3\0\2\11\4\0\1\11\3\0"+
+    "\1\11\2\0\1\11\1\0\2\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[70];
+    int [] result = new int[75];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -707,19 +691,19 @@ public class LexerIDE implements java_cup.runtime.Scanner {
             }
           case 18: break;
           case 3: 
-            { this.existenTokens = true; return symbol(sym.SLASH);
+            { this.existenTokens = true; return symbol(sym.MENOR, "<");
             }
           case 19: break;
           case 4: 
-            { this.existenTokens = true; return symbol(sym.MENOR, "<");
+            { /*ignore*/
             }
           case 20: break;
           case 5: 
-            { this.existenTokens = true; return symbol(sym.MAYOR, ">");
+            { this.existenTokens = true; return symbol(sym.SLASH);
             }
           case 21: break;
           case 6: 
-            { this.existenTokens = true; return symbol(sym.COMILLA,"\"");
+            { this.existenTokens = true; return symbol(sym.MAYOR, ">");
             }
           case 22: break;
           case 7: 
@@ -731,35 +715,35 @@ public class LexerIDE implements java_cup.runtime.Scanner {
             }
           case 24: break;
           case 9: 
-            { this.existenTokens = true; return symbol(sym.PATH, yytext());
+            { this.existenTokens = true; return symbol(sym.nombre, "nombre");
             }
           case 25: break;
           case 10: 
-            { this.existenTokens = true; return symbol(sym.nombre, "nombre");
+            { tokens.add(new Token("Carpeta","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.CARPETA, "CARPETA");
             }
           case 26: break;
           case 11: 
-            { tokens.add(new Token("Carpeta","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.CARPETA, "CARPETA");
+            { tokens.add(new Token("Archivo","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.ARCHIVO, "ARCHIVO");
             }
           case 27: break;
           case 12: 
-            { tokens.add(new Token("Archivo","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.ARCHIVO, "ARCHIVO");
+            { tokens.add(new Token("Proyecto","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.PROYECTO,"PROYECTO");
             }
           case 28: break;
           case 13: 
-            { tokens.add(new Token("Proyecto","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.PROYECTO,"PROYECTO");
+            { tokens.add(new Token(yytext(),"PATH", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.PATH, yytext());
             }
           case 29: break;
           case 14: 
-            { tokens.add(new Token("FinCarpeta","FINCARPETA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.FINCARPETA, "/CARPETA");
+            { this.existenTokens = true; return symbol(sym.ubicacion, "ubicacion");
             }
           case 30: break;
           case 15: 
-            { tokens.add(new Token("FinProyecto","FINPROYECTO", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.FINPROYECTO, "/PROYECTO");
+            { tokens.add(new Token("FinCarpeta","FINCARPETA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.FINCARPETA, "/CARPETA");
             }
           case 31: break;
           case 16: 
-            { this.existenTokens = true; return symbol(sym.ubicacion, "ubicacion");
+            { this.existenTokens = true; return symbol(sym.FINPROYECTO, "/PROYECTO");
             }
           case 32: break;
           default:

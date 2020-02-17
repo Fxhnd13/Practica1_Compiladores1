@@ -90,7 +90,7 @@ public class TreeManager {
                 Symbol sym = analizadorJFlex.next_token();
                 if (!analizadorJFlex.existenTokens())
                 break;
-           }
+            }
         }catch (Exception e){
           System.out.println(e.toString());
         }
@@ -119,6 +119,8 @@ public class TreeManager {
                 i++;
                 DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(tokens.get(i).getLexem());
                 selectedNode.add(newNode);
+                i++;
+                //inserte aqui el codigo para manejar el path
             }
         }
         return model;

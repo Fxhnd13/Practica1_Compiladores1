@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -69,6 +70,8 @@ public class Interface extends javax.swing.JFrame {
         CrearArchivoButton = new javax.swing.JMenuItem();
         EliminarArchivoButton = new javax.swing.JMenuItem();
         EditarNombreButton = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         DialogoErrores.setSize(new java.awt.Dimension(800, 300));
 
@@ -160,6 +163,18 @@ public class Interface extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(EditarNombreButton);
+
+        jMenu3.setText("Developer");
+
+        jMenuItem1.setText("Analisar Lexicamente IDE");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -263,7 +278,7 @@ public class Interface extends javax.swing.JFrame {
         Tree.setModel(TreeManager.createJTree(lexer));
         try {
             if(lexer.getErrores().isEmpty()){
-                new ParserIDE(lexer).parse();
+                new ParserIDE(new LexerIDE(new StringReader(texto))).parse();
             }else{
                 showError(lexer);
             }
@@ -272,6 +287,45 @@ public class Interface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        String texto = this.Text.getText();
+        LexerIDE lexer = new LexerIDE(new StringReader(texto));
+        try {
+            while(true){
+
+                // Obtener el token analizado y mostrar su información
+                Symbol sym = lexer.next_token();
+                if (!lexer.existenTokens())
+                break;
+            }
+            if(lexer.getErrores().isEmpty()){
+                MostrarLexemas(lexer);
+            }else{
+                MostrarErrores(lexer);
+            }
+        } catch (Exception ex) {
+            System.out.println("error");
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    public void MostrarLexemas(LexerIDE lexer){
+        String texto = this.TextDialog.getText();
+        for (Token token : lexer.getTokens()) {
+            texto+="Token:("+token.getType()+")|Lexema:("+token.getLexem()+")|Columna:("+token.getColumn()+")|Linea:("+token.getLine()+")\n";
+        }
+        this.TextDialog.setText(texto);
+        this.DialogoErrores.setVisible(true);
+    }
+    
+    public void MostrarErrores(LexerIDE lexer){
+        String texto = this.TextDialog.getText();
+        for (Token token : lexer.getErrores()) {
+            texto+="Token:("+token.getType()+")|Lexema:("+token.getLexem()+")|Columna:("+token.getColumn()+")|Linea:("+token.getLine()+")\n";
+        }
+        this.TextDialog.setText(texto);
+        this.TextDialog.setForeground(Color.RED);
+        this.DialogoErrores.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -322,7 +376,9 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

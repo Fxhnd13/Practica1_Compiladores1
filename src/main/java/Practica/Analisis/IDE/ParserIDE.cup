@@ -23,21 +23,21 @@ parser code {:
 :}
 
 /* Terminals (tokens returned by the scanner). */
-terminal           PROYECTO, FINPROYECTO, CARPETA, FINCARPETA, ARCHIVO, MENOR, MAYOR, COMILLA, ASIGNACION,
+terminal           PROYECTO, FINPROYECTO, CARPETA, FINCARPETA, ARCHIVO, MENOR, MAYOR, ASIGNACION,
                    nombre, ubicacion;
+
 terminal String    CADENA, PATH, SLASH;
+
 /* Non-terminals */
-non terminal            s0, s1, s2;
+non terminal       s0, s1, s2;
 
 /* The grammar */
 start with s0;
 
-s0 ::=  MENOR PROYECTO nombre ASIGNACION CADENA MAYOR s1 MENOR FINPROYECTO MAYOR
-       |error MAYOR s1
-       ;
-s1 ::=  MENOR s2
-       ;
-s2 ::=  ARCHIVO nombre ASIGNACION CADENA ubicacion ASIGNACION COMILLA PATH COMILLA SLASH MAYOR s1
-       |CARPETA nombre ASIGNACION CADENA MAYOR s1 MENOR FINCARPETA MAYOR
-       |error MAYOR s1
-       ;
+s0 ::= MENOR PROYECTO nombre ASIGNACION CADENA MAYOR s1 FINPROYECTO;
+
+s1 ::= MENOR s2 | ;
+
+s2 ::= ARCHIVO nombre ASIGNACION CADENA ubicacion ASIGNACION PATH SLASH MAYOR s1
+    |  CARPETA nombre ASIGNACION CADENA MAYOR s1 FINCARPETA s1
+    | error MAYOR s1;

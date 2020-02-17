@@ -19,6 +19,7 @@ S = [-_@+*#]
 D = [0-9]
 ID = ({L}|{D}|{S})+
 WHITE = ([\n\r\t\f])+
+EXT = ".csv"
 
 %{
     private ArrayList<Token> tokens = new ArrayList<Token>();
@@ -59,18 +60,17 @@ WHITE = ([\n\r\t\f])+
     "PROYECTO" {tokens.add(new Token("Proyecto","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.PROYECTO,"PROYECTO");}
     "CARPETA" {tokens.add(new Token("Carpeta","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.CARPETA, "CARPETA");}
     "ARCHIVO" {tokens.add(new Token("Archivo","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.ARCHIVO, "ARCHIVO");}
-    "/PROYECTO" {tokens.add(new Token("FinProyecto","FINPROYECTO", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.FINPROYECTO, "/PROYECTO");}
-    "/CARPETA" {tokens.add(new Token("FinCarpeta","FINCARPETA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.FINCARPETA, "/CARPETA");}
-    "nombre" { this.existenTokens = true; return symbol(sym.nombre, "nombre");}
-    "ubicacion" { this.existenTokens = true; return symbol(sym.ubicacion, "ubicacion");}
-
-    "<" { this.existenTokens = true; return symbol(sym.MENOR, "<");}
-    ">" { this.existenTokens = true; return symbol(sym.MAYOR, ">");}
-    "\"" { this.existenTokens = true; return symbol(sym.COMILLA,"\"");}
-    "=" { this.existenTokens = true; return symbol(sym.ASIGNACION, "=");}
-    (("/")({ID})((" ")+({ID}))*)(("/")({ID})((" ")+({ID}))*)*".csv" { this.existenTokens = true; return symbol(sym.PATH, yytext());}
-    (("\"")({ID})((" ")+({ID}))*("\"")) {tokens.add(new Token(yytext(), "CADENA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.CADENA, yytext());}
-    "/" { this.existenTokens = true; return symbol(sym.SLASH);}
+    ("<")("\ ")*("/")("\ ")*("PROYECTO")("\ ")*(">") {this.existenTokens = true; return symbol(sym.FINPROYECTO, "/PROYECTO");}
+    ("<")("\ ")*("/")("\ ")*("CARPETA")("\ ")*(">") {tokens.add(new Token("FinCarpeta","FINCARPETA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.FINCARPETA, "/CARPETA");}
+    "nombre" {this.existenTokens = true; return symbol(sym.nombre, "nombre");}
+    "ubicacion" {this.existenTokens = true; return symbol(sym.ubicacion, "ubicacion");}
+    "<" {this.existenTokens = true; return symbol(sym.MENOR, "<");}
+    ">" {this.existenTokens = true; return symbol(sym.MAYOR, ">");}
+    "=" {this.existenTokens = true; return symbol(sym.ASIGNACION, "=");}
+    ("\"")((("/")({ID})(("\ ")+({ID}))*)+)({EXT})("\"") {tokens.add(new Token(yytext(),"PATH", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.PATH, yytext());}
+    ("\"")({ID}|("\ "))*("\"") {tokens.add(new Token(yytext(), "CADENA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.CADENA, yytext());}
+    "/" {this.existenTokens = true; return symbol(sym.SLASH);}
     {WHITE} {/* ignore */}
+    ("\ ") {/*ignore*/}
     . {errores.add(new Token(yytext(), "ERROR", yyline, yycolumn));}
 }
