@@ -26,6 +26,19 @@ EXT = ".csv"
     private ArrayList<Token> errores = new ArrayList<Token>();
     private boolean existenTokens = false;
  
+    public void analizar(){
+        try{
+            while(true){
+
+                // Obtener el token analizado y mostrar su información
+                Symbol sym = this.next_token();
+                if (!this.existenTokens())
+                break;
+            }
+        }catch (Exception e){
+          System.out.println(e.toString());
+        }
+    }
     public boolean existenTokens(){
         return this.existenTokens;
     }
@@ -60,8 +73,8 @@ EXT = ".csv"
     "PROYECTO" {tokens.add(new Token("Proyecto","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.PROYECTO,"PROYECTO");}
     "CARPETA" {tokens.add(new Token("Carpeta","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.CARPETA, "CARPETA");}
     "ARCHIVO" {tokens.add(new Token("Archivo","PALABRA_RESERVADA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.ARCHIVO, "ARCHIVO");}
-    ("<")("\ ")*("/")("\ ")*("PROYECTO")("\ ")*(">") {this.existenTokens = true; return symbol(sym.FINPROYECTO, "/PROYECTO");}
-    ("<")("\ ")*("/")("\ ")*("CARPETA")("\ ")*(">") {tokens.add(new Token("FinCarpeta","FINCARPETA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.FINCARPETA, "/CARPETA");}
+    ("<")("\ ")*("/")("\ ")*("PROYECTO")("\ ")*(">") {this.existenTokens = true; return symbol(sym.FINPROYECTO, "</PROYECTO>");}
+    ("<")("\ ")*("/")("\ ")*("CARPETA")("\ ")*(">") {tokens.add(new Token("FinCarpeta","FINCARPETA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.FINCARPETA, "</CARPETA>");}
     "nombre" {this.existenTokens = true; return symbol(sym.nombre, "nombre");}
     "ubicacion" {this.existenTokens = true; return symbol(sym.ubicacion, "ubicacion");}
     "<" {this.existenTokens = true; return symbol(sym.MENOR, "<");}

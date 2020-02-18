@@ -5,8 +5,14 @@
  */
 package Practica.Gui;
 
+import Practica.Analisis.CSV.LexerCSV;
+import Practica.Analisis.CSV.ParserCSV;
 import Practica.Analisis.IDE.LexerIDE;
 import Practica.Analisis.IDE.ParserIDE;
+import Practica.Analisis.SQL.LexerSQL;
+import Practica.Analisis.SQL.ParserSQL;
+import static Practica.Gui.InterfaceManager.archivoAbierto;
+import static Practica.Gui.InterfaceManager.textoInicial;
 import Practica.Objetos.Token;
 import Practica.Utilidades.ReaderFiles;
 import Practica.Utilidades.TreeManager;
@@ -33,15 +39,6 @@ public class Interface extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void showError(LexerIDE lexer){
-        String text = "";
-        for (Token error : lexer.getErrores()) {
-            text+="Error: "+error.getLexem()+" en la linea: "+error.getLine()+" y la columna: "+error.getColumn()+"\n";
-        }
-        TextDialog.setForeground(Color.red);
-        TextDialog.setText(text);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -58,20 +55,26 @@ public class Interface extends javax.swing.JFrame {
         Tree = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
         Text = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
+        TextSQL = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        HacerArbolButton = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        TextoProyecto = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
+        AnalizarCSVButton = new javax.swing.JButton();
+        AnalizarSQLButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         AbrirProyectoButton = new javax.swing.JMenuItem();
         GuardarProyectoButton = new javax.swing.JMenuItem();
+        GuardarProyectoComoButton = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         CrearArchivoButton = new javax.swing.JMenuItem();
         EliminarArchivoButton = new javax.swing.JMenuItem();
-        EditarNombreButton = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        CambiarNombreArchivoButton = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         DialogoErrores.setSize(new java.awt.Dimension(800, 300));
 
@@ -107,12 +110,33 @@ public class Interface extends javax.swing.JFrame {
 
         jLabel1.setText("Orden SQL");
 
-        jLabel2.setText("Documento Abierto");
+        jLabel2.setText("Archivo CSV Abierto");
 
-        jButton1.setText("Ejecutar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        HacerArbolButton.setText("Hacer Arbol");
+        HacerArbolButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                HacerArbolButtonActionPerformed(evt);
+            }
+        });
+
+        TextoProyecto.setEditable(false);
+        TextoProyecto.setColumns(20);
+        TextoProyecto.setRows(5);
+        jScrollPane4.setViewportView(TextoProyecto);
+
+        jLabel3.setText("Estructura proyecto abierto");
+
+        AnalizarCSVButton.setText("Analizar csv");
+        AnalizarCSVButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AnalizarCSVButtonActionPerformed(evt);
+            }
+        });
+
+        AnalizarSQLButton.setText("Analizar SQL");
+        AnalizarSQLButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AnalizarSQLButtonActionPerformed(evt);
             }
         });
 
@@ -134,6 +158,14 @@ public class Interface extends javax.swing.JFrame {
         });
         jMenu1.add(GuardarProyectoButton);
 
+        GuardarProyectoComoButton.setText("Guardar Como...");
+        GuardarProyectoComoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarProyectoComoButtonActionPerformed(evt);
+            }
+        });
+        jMenu1.add(GuardarProyectoComoButton);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Archivo");
@@ -154,27 +186,31 @@ public class Interface extends javax.swing.JFrame {
         });
         jMenu2.add(EliminarArchivoButton);
 
-        jMenuBar1.add(jMenu2);
-
-        EditarNombreButton.setText("Cambiar Nombre");
-        EditarNombreButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                EditarNombreButtonMouseClicked(evt);
+        CambiarNombreArchivoButton.setText("Cambiar Nombre");
+        CambiarNombreArchivoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CambiarNombreArchivoButtonActionPerformed(evt);
             }
         });
-        jMenuBar1.add(EditarNombreButton);
+        jMenu2.add(CambiarNombreArchivoButton);
 
-        jMenu3.setText("Developer");
-
-        jMenuItem1.setText("Analisar Lexicamente IDE");
+        jMenuItem1.setText("Abrir");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
+        jMenu2.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu3);
+        jMenuItem2.setText("Guardar");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -187,15 +223,25 @@ public class Interface extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                            .addComponent(TextSQL, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1)))
+                                .addComponent(jLabel1)
+                                .addGap(35, 35, 35)
+                                .addComponent(HacerArbolButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(AnalizarCSVButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(AnalizarSQLButton)))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -204,18 +250,28 @@ public class Interface extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1)
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(HacerArbolButton)
+                                .addComponent(AnalizarCSVButton)
+                                .addComponent(AnalizarSQLButton)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextSQL, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -227,100 +283,134 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_TreeMouseClicked
 
     private void AbrirProyectoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirProyectoButtonActionPerformed
-        this.Text.setText(InterfaceManager.openProyect());
+        this.TextoProyecto.setText(InterfaceManager.openProject(TextoProyecto.getText()));
     }//GEN-LAST:event_AbrirProyectoButtonActionPerformed
 
     private void GuardarProyectoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarProyectoButtonActionPerformed
-        InterfaceManager.saveProyect(this.Text.getText());
+        InterfaceManager.saveProyect(this.TextoProyecto.getText(),1);
     }//GEN-LAST:event_GuardarProyectoButtonActionPerformed
 
     private void CrearArchivoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearArchivoButtonActionPerformed
-        if(Tree.getSelectionPath()!=null){    
-            String nombre = JOptionPane.showInputDialog("Ingrese el nombre del documento.");
-            if(nombre != null){
-                if(!nombre.isEmpty()){
-                    Tree.setModel(TreeManager.addChild(nombre, Tree));
-                }else{
-                    JOptionPane.showMessageDialog(null, "Ingrese un nombre valido.","Error",JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "Primero seleccione la ubicacion en la que desea crear el archivo","Error",JOptionPane.ERROR_MESSAGE);
-        }
+        InterfaceManager.crearArchivo(Tree);
+        TextoProyecto.setText(TreeManager.createIDEDocument((DefaultMutableTreeNode) Tree.getModel().getRoot(),0));
     }//GEN-LAST:event_CrearArchivoButtonActionPerformed
 
     private void EliminarArchivoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarArchivoButtonActionPerformed
-        if(Tree.getSelectionPath()!=null){    
-            Tree.setModel(TreeManager.removeChild(Tree));
-        }else{
-            JOptionPane.showMessageDialog(null, "Primero seleccione el archivo que desea eliminar","Error",JOptionPane.ERROR_MESSAGE);
+        int opcion = JOptionPane.showConfirmDialog(null, "Se han detectado cambios en el archivo abierto actualmente, ¿desea guardarlos?", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if(opcion == JOptionPane.OK_OPTION){
+            InterfaceManager.eliminarArchivo(Tree);
         }
+        TextoProyecto.setText(TreeManager.createIDEDocument((DefaultMutableTreeNode) Tree.getModel().getRoot(),0));
     }//GEN-LAST:event_EliminarArchivoButtonActionPerformed
 
-    private void EditarNombreButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditarNombreButtonMouseClicked
-        if(Tree.getSelectionPath()!=null){    
-            String nombre = JOptionPane.showInputDialog("Ingrese el nombre nuevo.");
-            if(nombre != null){
-                if(!nombre.isEmpty()){
-                    Tree.setModel(TreeManager.setNodeName(nombre, Tree));
+    private void HacerArbolButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HacerArbolButtonActionPerformed
+        String texto = this.TextoProyecto.getText(); //obtiene el texto del textArea
+        LexerIDE lexer = new LexerIDE(new StringReader(texto));
+        lexer.analizar();//analiza lexicamente 
+        ParserIDE parser = null;
+        try {
+            if(lexer.getErrores().isEmpty()){//si no hay errores lexicos entonces analiza sintacticamente
+                parser = new ParserIDE(new LexerIDE(new StringReader(texto)));
+                parser.parse();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Hubo errores", "Error", JOptionPane.ERROR_MESSAGE);
+        }finally{
+            if(lexer.getErrores().isEmpty()&&parser.getErrores().isEmpty()){//si no hay errores lexicos ni sintacticos arma el arbol
+                Tree.setModel(TreeManager.createJTree(new LexerIDE(new StringReader(texto))));
+            }else{
+                if(lexer.getErrores().isEmpty()){
+                    mostrarErroresSintacticos(parser.getErrores());//si hay errores y no son lexicos entonces muestra los erroers sintacticos
                 }else{
-                    JOptionPane.showMessageDialog(null, "Ingrese un nombre valido.","Error",JOptionPane.ERROR_MESSAGE);
+                    MostrarErroresLexicos(lexer.getErrores());//si hay errores lexicos los muestra
                 }
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Primero seleccione el archivo/carpeta/proyecto al que desea cambiar el nombre.","Error",JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_EditarNombreButtonMouseClicked
+    }//GEN-LAST:event_HacerArbolButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String texto = this.Text.getText();
-        LexerIDE lexer = new LexerIDE(new StringReader(texto));
-        Tree.setModel(TreeManager.createJTree(lexer));
-        try {
-            if(lexer.getErrores().isEmpty()){
-                new ParserIDE(new LexerIDE(new StringReader(texto))).parse();
-            }else{
-                showError(lexer);
-            }
-        } catch (Exception ex) {
-            System.out.println("error");
+    private void CambiarNombreArchivoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarNombreArchivoButtonActionPerformed
+        InterfaceManager.modificarNombre(Tree);
+        if(Tree.getModel().getRoot()!=null){
+            TextoProyecto.setText(TreeManager.createIDEDocument((DefaultMutableTreeNode) Tree.getModel().getRoot(),0));
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_CambiarNombreArchivoButtonActionPerformed
+
+    private void GuardarProyectoComoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarProyectoComoButtonActionPerformed
+        InterfaceManager.saveProyectAs(TextoProyecto.getText(), 1);
+    }//GEN-LAST:event_GuardarProyectoComoButtonActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        String texto = this.Text.getText();
-        LexerIDE lexer = new LexerIDE(new StringReader(texto));
-        try {
-            while(true){
-
-                // Obtener el token analizado y mostrar su información
-                Symbol sym = lexer.next_token();
-                if (!lexer.existenTokens())
-                break;
-            }
-            if(lexer.getErrores().isEmpty()){
-                MostrarLexemas(lexer);
-            }else{
-                MostrarErrores(lexer);
-            }
-        } catch (Exception ex) {
-            System.out.println("error");
-        }
+        this.Text.setText(InterfaceManager.openProyect(Text.getText()));
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    public void MostrarLexemas(LexerIDE lexer){
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        InterfaceManager.saveProyect(this.Text.getText(), 2);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void AnalizarCSVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalizarCSVButtonActionPerformed
+        String texto = this.Text.getText(); //obtiene el texto del textArea
+        LexerCSV lexer = new LexerCSV(new StringReader(texto));
+        lexer.analizar();//analiza lexicamente 
+        ParserCSV parser = null;
+        try {
+            if(lexer.getErrores().isEmpty()){//si no hay errores lexicos entonces analiza sintacticamente
+                parser = new ParserCSV(new LexerCSV(new StringReader(texto)));
+                parser.parse();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Hubo errores", "Error", JOptionPane.ERROR_MESSAGE);
+        }finally{
+            if(lexer.getErrores().isEmpty()&&parser.getErrores().isEmpty()){//si no hay errores lexicos ni sintacticos arma el arbol
+                JOptionPane.showMessageDialog(null, "Se ha analizado con éxito, no hay errores.");
+            }else{
+                if(lexer.getErrores().isEmpty()){
+                    mostrarErroresSintacticos(parser.getErrores());//si hay errores y no son lexicos entonces muestra los erroers sintacticos
+                }else{
+                    MostrarErroresLexicos(lexer.getErrores());//si hay errores lexicos los muestra
+                }
+            }
+        }
+    }//GEN-LAST:event_AnalizarCSVButtonActionPerformed
+
+    private void AnalizarSQLButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalizarSQLButtonActionPerformed
+        String texto = this.TextSQL.getText(); //obtiene el texto del textArea
+        LexerSQL lexer = new LexerSQL(new StringReader(texto));
+        lexer.analizar();//analiza lexicamente 
+        ParserSQL parser = null;
+        try {
+            if(lexer.getErrores().isEmpty()){//si no hay errores lexicos entonces analiza sintacticamente
+                parser = new ParserSQL(new LexerSQL(new StringReader(texto)));
+                parser.parse();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Hubo errores", "Error", JOptionPane.ERROR_MESSAGE);
+        }finally{
+            if(lexer.getErrores().isEmpty()&&parser.getErrores().isEmpty()){//si no hay errores lexicos ni sintacticos arma el arbol
+                JOptionPane.showMessageDialog(null, "Se ha analizado con éxito, no hay errores.");
+            }else{
+                if(lexer.getErrores().isEmpty()){
+                    mostrarErroresSintacticos(parser.getErrores());//si hay errores y no son lexicos entonces muestra los erroers sintacticos
+                }else{
+                    MostrarErroresLexicos(lexer.getErrores());//si hay errores lexicos los muestra
+                }
+            }
+        }
+    }//GEN-LAST:event_AnalizarSQLButtonActionPerformed
+    
+    public void MostrarErroresLexicos(ArrayList<Token> errores){
         String texto = this.TextDialog.getText();
-        for (Token token : lexer.getTokens()) {
+        for (Token token : errores) {
             texto+="Token:("+token.getType()+")|Lexema:("+token.getLexem()+")|Columna:("+token.getColumn()+")|Linea:("+token.getLine()+")\n";
         }
         this.TextDialog.setText(texto);
+        this.TextDialog.setForeground(Color.RED);
         this.DialogoErrores.setVisible(true);
     }
     
-    public void MostrarErrores(LexerIDE lexer){
+    public void mostrarErroresSintacticos(ArrayList<String> errores){
         String texto = this.TextDialog.getText();
-        for (Token token : lexer.getErrores()) {
-            texto+="Token:("+token.getType()+")|Lexema:("+token.getLexem()+")|Columna:("+token.getColumn()+")|Linea:("+token.getLine()+")\n";
+        for (String text : errores) {
+            texto+=text+")\n";
         }
         this.TextDialog.setText(texto);
         this.TextDialog.setForeground(Color.RED);
@@ -363,25 +453,31 @@ public class Interface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AbrirProyectoButton;
+    private javax.swing.JButton AnalizarCSVButton;
+    private javax.swing.JButton AnalizarSQLButton;
+    private javax.swing.JMenuItem CambiarNombreArchivoButton;
     private javax.swing.JMenuItem CrearArchivoButton;
     private javax.swing.JDialog DialogoErrores;
-    private javax.swing.JMenu EditarNombreButton;
     private javax.swing.JMenuItem EliminarArchivoButton;
     private javax.swing.JMenuItem GuardarProyectoButton;
+    private javax.swing.JMenuItem GuardarProyectoComoButton;
+    private javax.swing.JButton HacerArbolButton;
     private javax.swing.JTextArea Text;
     private javax.swing.JTextArea TextDialog;
+    private javax.swing.JTextField TextSQL;
+    private javax.swing.JTextArea TextoProyecto;
     private javax.swing.JTree Tree;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
 }

@@ -24,32 +24,25 @@ import javax.swing.tree.DefaultTreeModel;
 
 public class TreeManager {
     
-    public static DefaultTreeModel setNodeName(String name, JTree tree){
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+    public static void setNodeName(String name, JTree tree){
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
         selectedNode.setUserObject(name);
-        return model;
     }
     
-    public static DefaultTreeModel removeChild(JTree tree){
+    public static void removeChild(JTree tree){
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         if(selectedNode != tree.getModel().getRoot()){
             model.removeNodeFromParent(selectedNode);
-            return model;
         }else{
             JOptionPane.showMessageDialog(null, "No se puede eliminar el nodo Raíz", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return model;
     }
     
-    public static DefaultTreeModel addChild(String nombre, JTree tree){
+    public static void addChild(String nombre, JTree tree){
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(nombre);
         selectedNode.add(newNode);
-        
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        return model;
     }
     
     public static DefaultTreeModel createJTree(ArrayList<Token> tokens){
@@ -83,17 +76,7 @@ public class TreeManager {
     }
     
     public static DefaultTreeModel createJTree(LexerIDE analizadorJFlex){
-         try{
-            while(true){
-
-                // Obtener el token analizado y mostrar su información
-                Symbol sym = analizadorJFlex.next_token();
-                if (!analizadorJFlex.existenTokens())
-                break;
-            }
-        }catch (Exception e){
-          System.out.println(e.toString());
-        }
+        analizadorJFlex.analizar();
         ArrayList<Token> tokens = analizadorJFlex.getTokens();
         JTree tree = new JTree();
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
@@ -113,7 +96,7 @@ public class TreeManager {
                 //modificar el model del arbol
             }
             if(tokens.get(i).getLexem().equals("FinCarpeta")){
-                selectedNode = selectedNode.getPreviousNode();
+                selectedNode = (DefaultMutableTreeNode) selectedNode.getParent();
             }
             if(tokens.get(i).getLexem().equals("Archivo")){
                 i++;
@@ -126,8 +109,22 @@ public class TreeManager {
         return model;
     }
     
-    public static void createIDEDocument(DefaultMutableTreeNode node){
-        
+    public static String createIDEDocument(DefaultMutableTreeNode node, int nivel){
+        String estructura = "";
+        String tabulacion = "";
+        for (int i = 0; i < (nivel+1)*4; i++) {
+            tabulacion +=" ";
+        }
+        if(node.isRoot()){
+            estructura += "<PROYECTO nombre=\""+node.getUserObject().toString()+"\">\n"+createIDEDocument(node.getNextNode(), (nivel+1))+"</PROYECTO>";
+        }
+        if(node.isLeaf()){
+            estructura += tabulacion+"<ARCHIVO nombre=\""+node.getUserObject().toString()+"\" ubicacion=\"/home/usr/jose.csv\"/>\n";
+        }
+        if((!node.isLeaf())&&(!node.isRoot())){
+            estructura += tabulacion+"<CARPETA nombre=\""+node.getUserObject().toString()+"\">\n"+createIDEDocument(node.getNextNode(), (nivel+1))+tabulacion+"</CARPETA>\n";
+        }
+        return estructura;
     }
     
 }

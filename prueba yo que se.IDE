@@ -7,6 +7,6 @@
           <CARPETA nombre="Mexico">
                <ARCHIVO nombre="Df" ubicacion="/home/usr/jose.csv"/>
           </CARPETA>
-               <ARCHIVO nombre="USA" ubicacion="/home/usr/jose.csv"/>
+          <ARCHIVO nombre="USA" ubicacion="/home/usr/jose.csv"/>
      </CARPETA>
 </PROYECTO>

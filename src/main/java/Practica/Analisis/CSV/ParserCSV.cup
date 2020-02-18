@@ -1,11 +1,11 @@
-package Practica.Analisis.IDE;
+package Practica.Analisis.CSV;
 
 import java_cup.runtime.Symbol;
 import java.util.ArrayList;
 
 parser code {:
         
-        public ParserIDE(LexerIDE lex) { 
+        public ParserCSV(LexerCSV lex) { 
             super(lex);   
 	}
         
@@ -33,21 +33,23 @@ parser code {:
 :}
 
 /* Terminals (tokens returned by the scanner). */
-terminal           PROYECTO, FINPROYECTO, CARPETA, FINCARPETA, ARCHIVO, MENOR, MAYOR, ASIGNACION,
-                   nombre, ubicacion;
+terminal           COMA, FINLINEA;
 
-terminal String    CADENA, PATH, SLASH;
+terminal String    CADENA, ID;
 
 /* Non-terminals */
-non terminal       s0, s1, s2;
+non terminal       s0, s1, s2, s3, s4;
 
 /* The grammar */
 start with s0;
 
-s0 ::= MENOR PROYECTO nombre ASIGNACION CADENA MAYOR s1 FINPROYECTO | error MENOR s2;
+s0 ::= ID s1 FINLINEA s2 |error FINLINEA s2;
 
-s1 ::= MENOR s2 | error MENOR s2| ;
+s1 ::= | COMA ID s1 |error FINLINEA s2;
 
-s2 ::= ARCHIVO nombre ASIGNACION CADENA ubicacion ASIGNACION PATH SLASH MAYOR s1
-    |  CARPETA nombre ASIGNACION CADENA MAYOR s1 FINCARPETA s1
-    | error MENOR s2 ;
+s2 ::= s4 s3 FINLINEA |error FINLINEA s2;
+
+s3 ::= | COMA s4 s3 |error FINLINEA s2;
+
+s4 ::= ID | CADENA ;
+

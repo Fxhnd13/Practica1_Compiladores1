@@ -1,0 +1,68 @@
+
+package Practica.Analisis.SQL;
+
+import java_cup.runtime.Symbol;
+import java.util.ArrayList;
+
+parser code {:
+        
+        public ParserSQL(LexerSQL lex) { 
+            super(lex);   
+	}
+        
+        public void setAccion(String tipo,String mensaje,String accion){
+            System.out.println(tipo+"         "+mensaje);
+        }
+
+        protected final static int _error_sync_size = 3;
+        
+        protected ArrayList<String> errores = new ArrayList<String>();
+        
+        public ArrayList<String> getErrores(){
+            return errores;
+        }
+        
+        protected int error_sync_size( ) {return _error_sync_size;}
+        
+        public void syntax_error(Symbol s){
+            errores.add("Hubo un error sintactico en la linea: ("+(s.left+1)+") no cumple con la estructura establecida en la Columna: "+(s.right+1)); 
+        }
+        
+        public void unrecovered_sintax_error(Symbol s)throws java.lang.Exception {
+            report_fatal_error("Se termino de leer el archivo", s);
+        }
+:}
+
+/* Terminals (tokens returned by the scanner). */
+terminal           SELECCIONAR, EN, FILTRAR, INSERTAR, VALORES, ACTUALIZAR, ASIGNAR,ASIGNACION, ELIMINAR, PARENTESISA, PARENTESISC,
+                   COMA, FINLINEA, AND, OR, TODO;
+
+terminal String    CADENA, ID, NUM, OPERADOR, PATH;
+
+/* Non-terminals */
+non terminal       inicio, orden, listColumn, listColumnP, condiciones, comparacionList, 
+                   comparacionListP, listColumn2, valueList, valueListP, listAsigValue, listAsigValueP, value,
+                   comparacionListAnd, comparacionListOr, operadorCondicion;
+
+/* The grammar */
+start with inicio;
+
+inicio ::= orden FINLINEA;
+orden ::= SELECCIONAR listColumn EN PATH condiciones
+        | INSERTAR EN PATH listColumn2 VALORES PARENTESISA valueList PARENTESISC
+        | ACTUALIZAR EN PATH ASIGNAR listAsigValue condiciones
+        | ELIMINAR EN PATH condiciones;
+listColumn ::= TODO | ID listColumnP;
+listColumnP ::= | COMA ID listColumnP;
+condiciones ::= | FILTRAR comparacionList;
+comparacionList ::= ID operadorCondicion value comparacionListP;
+comparacionListP ::= | AND ID operadorCondicion value comparacionListAnd | OR ID operadorCondicion value comparacionListOr;
+listColumn2 ::= | PARENTESISA ID listColumnP PARENTESISC;
+valueList ::= value valueListP;
+valueListP ::= | COMA value valueListP;
+listAsigValue ::= ID ASIGNACION value listAsigValueP;
+listAsigValueP ::= | COMA listAsigValue;
+value ::= CADENA | NUM;
+comparacionListAnd ::= |AND ID operadorCondicion value comparacionListAnd;
+comparacionListOr ::= | OR ID operadorCondicion value comparacionListOr;
+operadorCondicion ::= ASIGNACION | OPERADOR;

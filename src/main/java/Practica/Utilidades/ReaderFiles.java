@@ -46,10 +46,29 @@ public class ReaderFiles {
         return text;
     }
     
-    public static void writeFile(String text, File file, String nombre){
+    public static void writeFile(String text, File file, String nombre, String extension){
         FileWriter fichero = null;
         PrintWriter pw = null;
-        String path = file.getAbsolutePath()+"/"+nombre+".IDE";
+        String path = file.getAbsolutePath()+"/"+nombre+extension;
+        try{
+            fichero = new FileWriter(path);
+            pw = new PrintWriter(fichero);
+            pw.print(text);
+        } catch (IOException ex) {
+            Logger.getLogger(ReaderFiles.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try{
+                if(null != fichero) fichero.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ReaderFiles.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public static void overWriteFile(String text, File file){
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        String path = file.getAbsolutePath();
         try{
             fichero = new FileWriter(path);
             pw = new PrintWriter(fichero);
