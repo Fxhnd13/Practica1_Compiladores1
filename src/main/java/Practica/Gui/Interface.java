@@ -55,7 +55,6 @@ public class Interface extends javax.swing.JFrame {
         Tree = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
         Text = new javax.swing.JTextArea();
-        TextSQL = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         HacerArbolButton = new javax.swing.JButton();
@@ -64,6 +63,8 @@ public class Interface extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         AnalizarCSVButton = new javax.swing.JButton();
         AnalizarSQLButton = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        TextSQL = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         AbrirProyectoButton = new javax.swing.JMenuItem();
@@ -139,6 +140,10 @@ public class Interface extends javax.swing.JFrame {
                 AnalizarSQLButtonActionPerformed(evt);
             }
         });
+
+        TextSQL.setColumns(20);
+        TextSQL.setRows(5);
+        jScrollPane5.setViewportView(TextSQL);
 
         jMenu1.setText("Proyecto");
 
@@ -223,25 +228,27 @@ public class Interface extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TextSQL, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
                                 .addComponent(jLabel1)
                                 .addGap(35, 35, 35)
                                 .addComponent(HacerArbolButton)
                                 .addGap(18, 18, 18)
                                 .addComponent(AnalizarCSVButton)
                                 .addGap(18, 18, 18)
-                                .addComponent(AnalizarSQLButton)))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                                .addComponent(AnalizarSQLButton)))
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -258,7 +265,7 @@ public class Interface extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -267,8 +274,8 @@ public class Interface extends javax.swing.JFrame {
                                 .addComponent(HacerArbolButton)
                                 .addComponent(AnalizarCSVButton)
                                 .addComponent(AnalizarSQLButton)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TextSQL, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(13, 13, 13)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -464,7 +471,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JButton HacerArbolButton;
     private javax.swing.JTextArea Text;
     private javax.swing.JTextArea TextDialog;
-    private javax.swing.JTextField TextSQL;
+    private javax.swing.JTextArea TextSQL;
     private javax.swing.JTextArea TextoProyecto;
     private javax.swing.JTree Tree;
     private javax.swing.JLabel jLabel1;
@@ -479,5 +486,6 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     // End of variables declaration//GEN-END:variables
 }
