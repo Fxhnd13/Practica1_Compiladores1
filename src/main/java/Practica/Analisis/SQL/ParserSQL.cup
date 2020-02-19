@@ -40,14 +40,15 @@ terminal           SELECCIONAR, EN, FILTRAR, INSERTAR, VALORES, ACTUALIZAR, ASIG
 terminal String    CADENA, ID, NUM, OPERADOR, PATH;
 
 /* Non-terminals */
-non terminal       inicio, orden, listColumn, listColumnP, condiciones, comparacionList, 
+non terminal       inicio, orden, ordenP, listColumn, listColumnP, condiciones, comparacionList, 
                    comparacionListP, listColumn2, valueList, valueListP, listAsigValue, listAsigValueP, value,
                    comparacionListAnd, comparacionListOr, operadorCondicion;
 
 /* The grammar */
 start with inicio;
 
-inicio ::= orden FINLINEA;
+inicio ::= orden FINLINEA ordenP;
+ordenP ::= | orden FINLINEA;
 orden ::= SELECCIONAR listColumn EN PATH condiciones
         | INSERTAR EN PATH listColumn2 VALORES PARENTESISA valueList PARENTESISC
         | ACTUALIZAR EN PATH ASIGNAR listAsigValue condiciones
